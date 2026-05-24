@@ -37,7 +37,7 @@ UFW offers a less complicated firewall that is very easy to use and efficent. Co
 VirtualBox is available for any OS whereas UTM is strictly for macOS user. UTM is also beginner friendly and less heavy on the memory. VirtualBox is feature-rich and support a wide variety of distros, sadly it is also slower as it is memory heavy.
 
 #### Partitioning
-
+The 20GB disk is split into a small unencrypted /boot partition (956MB) needed by the bootloader, and a large encrypted LUKS partition containing the rest of the disk. Inside that encrypted container, LVM manages three logical volumes: root (7.5GB) for the OS, swap (1GB) as RAM overflow, and home (10.5GB) for user data. Keeping /boot separate is necessary since encryption cannot be unlocked before the bootloader runs. LVM was chosen for its flexibility, allowing partition resizing without touching the physical disk layout.
 
 #### Security Policies
 For the security policies I implemented those that were demanded in the subject:
