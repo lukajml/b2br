@@ -14,12 +14,12 @@ mem2=$(free --mega | grep Mem | awk '{print $2}')
 mem3=$(free --mega | grep Mem | awk '{printf ("%.2f"), $3/$2 * 100}')
 printf "#Memory Usage: $mem1/$mem2%s ($mem3%%)\n" "MB"
 
-used=$(df -Ph --total | grep total | awk '{print $3}' | cut -d G -f1)
-total=$(df -Ph --total | grep total | awk '{print $4}' | cut -d G -f1)
-percent=$(df -Ph --total | grep total | awk '{printf ("%.2f"), $3/$4 * 100}')
-printf "#Disk Usage: $used/$total%s ($percent%%)\n" "Gb"
+used=$(df -Ph --total | grep total | awk '{print $3}')
+total=$(df -Ph --total | grep total | awk '{print $2}')
+percent=$(df -Ph --total | grep total | awk '{printf ("%.2f"), $3/$2 * 100}')
+printf "#Disk Usage: $used/$total ($percent%%)\n"
 
-cpu_load=$(mpstat | tail -n 1 | awk '{print $4+$5+$6+$7+$8+$9+$10+$11+$12}')
+cpu_load=$(mpstat | tail -n 1 | awk '{printf("%.1f"), 100 - $NF}')
 printf "#CPU Load: $cpu_load%%\n"
 
 l_boot=$(who -b | awk '{print $3 " " $4}')
@@ -31,7 +31,6 @@ else echo "no"
 fi)
 printf "#LVM use: $lvm_use\n"
 
-
 tcp=$(ss -t | grep ESTAB | wc -l)
 printf "#Connection TCP: $tcp ESTABLISHED\n"
 
@@ -42,5 +41,5 @@ ip=$(hostname -I | awk '{print $1}')
 mac=$(ip link | grep ether | awk '{print $2}')
 printf "#Network: $ip ($mac)\n"
 
-sudo=$(sudo journalctl _COMM=sudo | wc -l)
+sudo=$(grep -c COMMAND /var/log/sudo/sudo.log 2>/dev/null || echo 0)
 printf "#Sudo: $sudo cmd\n"
