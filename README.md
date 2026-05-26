@@ -36,12 +36,19 @@ UFW offers a less complicated firewall that is very easy to use and efficent. Co
 #### VirtualBox vs UTM
 VirtualBox is available for any OS whereas UTM is strictly for macOS user. UTM is also beginner friendly and less heavy on the memory. VirtualBox is feature-rich and support a wide variety of distros, sadly it is also slower as it is memory heavy.
 
+#### APT vs Aptitude
+Apt is the default Linux command-line tool to manage thes packages on Debian-based system. It comes by default and doesn't offer a graphical interface.
+Aptitude is another populart tool to manage packages, it doesn't come by default so it needs to be installed with Apt. Contrary to Apt, Aptitude as a graphical interface.
+
 #### Partitioning
 The 20GB disk is split into a small unencrypted /boot partition (956MB) needed by the bootloader, and a large encrypted LUKS partition containing the rest of the disk. Inside that encrypted container, LVM manages three logical volumes: root (7.5GB) for the OS, swap (1GB) as RAM overflow, and home (10.5GB) for user data. Keeping /boot separate is necessary since encryption cannot be unlocked before the bootloader runs. LVM was chosen for its flexibility, allowing partition resizing without touching the physical disk layout.
 
 #### Security Policies
-For the security policies I implemented those that were demanded in the subject:
+The security policies where given in the subject, for UFW we had to block all incoming and outgoing requests and allow port 4242 for incoming traffic.
 
+For sudo, I had to limit the paths that can be used by sudo to run commands, require TTY (needed to use sudo), display a custom message when using wrong password with sudo, set the input logs file, set the directory to save additional output ans input logs, limit connection attempts using sudo.
+
+For the passwords, I had to enforce the following policies:
 • Your password has to expire every 30 days.\
 • The minimum number of days between password changes must be set to 2.\
 • The user has to receive a warning message 7 days before their password expires.\
@@ -50,20 +57,49 @@ a lowercase letter, and a number. Also, it must not contain more than 3 consecut
 identical characters.\
 • The password must not include the name of the user.
 
-These policies offer a strong security for the Virtual Machine and although it does not really need it, this is a great habit to implement for future projects.
 
 #### User Management
-I set up only 2 users, as demanded by the subject, a root user and a 'normal' user (agiraud42), which has been added to the sudo and user 42 groups as requested by the subject..
+I set up only 2 users, as demanded by the subject, a root user and a 'normal' user (lulauren), which has been added to the sudo and user 42 groups as requested by the subject.
 
 #### Services Installation
 - **sudo** (which gives the right to a user to temporarly run command only root could do)
 - **libpam-pwquality** (which is used for the password format enforcement)
-- **ufw** (which is the firewall used for Debian
+- **ufw** (which is the firewall used for Debian)
 
-Seat0 is the default seat in Linux. It is the seat that is used when you first boot your system. The login screen is displayed on tty1, and the graphical user interface (GUI) is displayed on tty2.
+#### SSH
+Secure Shell is a network communication protocol that enables computers to communicate. With SSH you get a command-line interface and can run commands on the remote machine. By default  the SSH service runs on port 22.
 
+### Defense
+
+#### Logging in
+
+Root password: Borntobrt42
+User password: Born2broot
+
+#### User and group creation
+- `adduser <user_name>`
+- `groupadd <groupe_name>`
+- `usermod -aG <groupe_name> <user_mod>`
+- `chage -l <user_name>`
+- `getent group <group_name>`\
+To verify the changes: cat `/etc/group`.
+
+#### Hostname change
+- `hostnamectl set-hostname <new_hostname>`
+
+#### Add or delete new UFW rule
+- `ufw allow <port_rule>`
+- `ufw delete <port_rule>`
+
+#### SSH
+- `systemctl status ssh`
+- `systemctl enable`
+- `systemctl restart ssh`
+
+#### Update system
+- `apt update`
 
 ## Resources
 
-https://github.com/chlimous/42-born2beroot_guide
-https://github.com/Audreypgt/Born2BeRoot/blob/main/complete_guide.md
+[chlimous](https://github.com/chlimous/42-born2beroot_guide)
+[apeuget](https://github.com/Audreypgt/Born2BeRoot/blob/main/complete_guide.md)
