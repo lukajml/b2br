@@ -21,7 +21,6 @@ ssh <username42>@localhost -p 4242
 ```
 
 ### Project description
-( partionnimg, security policies, user management, services installations, apparmor vs selinux, ufw vs firewalld, virtuabox vs utm)
 
 #### Debian vs Rocky Linux
 I choose Debian, instead of Rocky for my os, because Rocky is not only more complicated for beginners, it is also more servers oriented eventhough it's robustness was very appeling.
@@ -39,6 +38,9 @@ VirtualBox is available for any OS whereas UTM is strictly for macOS user. UTM i
 #### APT vs Aptitude
 Apt is the default Linux command-line tool to manage thes packages on Debian-based system. It comes by default and doesn't offer a graphical interface.
 Aptitude is another populart tool to manage packages, it doesn't come by default so it needs to be installed with Apt. Contrary to Apt, Aptitude as a graphical interface.
+
+#### LVM
+Logical volume manager, provides a method of allocating and managing space on mass-storage devices that is more advanced and flexible than the traditional methos of partitioning storage volumes.
 
 #### Partitioning
 The 20GB disk is split into a small unencrypted /boot partition (956MB) needed by the bootloader, and a large encrypted LUKS partition containing the rest of the disk. Inside that encrypted container, LVM manages three logical volumes: root (7.5GB) for the OS, swap (1GB) as RAM overflow, and home (10.5GB) for user data. Keeping /boot separate is necessary since encryption cannot be unlocked before the bootloader runs. LVM was chosen for its flexibility, allowing partition resizing without touching the physical disk layout.
@@ -69,6 +71,14 @@ I set up only 2 users, as demanded by the subject, a root user and a 'normal' us
 #### SSH
 Secure Shell is a network communication protocol that enables computers to communicate. With SSH you get a command-line interface and can run commands on the remote machine. By default  the SSH service runs on port 22.
 
+#### Sudo
+Sudo stands for either "substitute user do" or "super user do" and it allows you to temporarily elevate your current user account to have root privileges. This is different from "su" which is not temporary.
+
+#### Cron
+Cron is a program that allows Unix systems users to execute scripts, commands or softwares automatically at a pre-defined date/time or on a pre-define cycle.
+- Crontab is short for Cron table, the config file for Cron.
+- Cron job is a task or command scheduled to run at regular intervals as defined in the crontab.
+
 ### Defense
 
 #### Logging in
@@ -91,15 +101,39 @@ To verify the changes: cat `/etc/group`.
 - `ufw allow <port_rule>`
 - `ufw delete <port_rule>`
 
+#### LVM
+- `lsblk`
+
 #### SSH
 - `systemctl status ssh`
 - `systemctl enable`
 - `systemctl restart ssh`
 
-#### Update system
+#### System
+- `cat /etc/os-realease`
 - `apt update`
 
+#### Cron
+- `crontab -l`
+- `crontab -e`
+
+#### Script
+- `nano /etc/cron.d/monitoring.sh`
+
+#### Password
+- `cat /etc/pam.d/common-password`
+- `cat /etc/sudoers`
+
+#### AppArmor
+- `aa-status`
+
 ## Resources
+> [!NOTE]
+**No AI was used for this project.**
 
 [chlimous](https://github.com/chlimous/42-born2beroot_guide)
 [apeuget](https://github.com/Audreypgt/Born2BeRoot/blob/main/complete_guide.md)
+[agiraud](https://github.com/adylantes)
+[egambini](https://github.com/lagambini)
+
+Thanks to all my peers for their help!
