@@ -79,6 +79,9 @@ Cron is a program that allows Unix systems users to execute scripts, commands or
 - Crontab is short for Cron table, the config file for Cron.
 - Cron job is a task or command scheduled to run at regular intervals as defined in the crontab.
 
+#### Libpam-pwquality
+Libpwquality's purpose is to provide common functions for password quality checking and also scoring them based on their apparent randomness.
+
 ### Defense
 
 #### Logging in
